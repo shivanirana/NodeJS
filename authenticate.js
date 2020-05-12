@@ -44,5 +44,14 @@ exports.jwtPassport = passport.use(new JwtStratergy(opts,
             }
         });
     }));
+    exports.verifyAdmin = function(params, err, next) {
+        if (params.user.admin){
+          return next();
+        } else {
+          var err = new Error('Only administrators are authorized to perform this operation.');
+          err.status = 403;
+          return next(err);
+        }
+    };
 
 exports.verifyUser = passport.authenticate('jwt', {session: false});
